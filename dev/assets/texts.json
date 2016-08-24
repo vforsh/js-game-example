@@ -1,0 +1,124 @@
+﻿{
+	"README": "Please use JSON Validator after each change this file. It will help to find errors.",
+	"JSON_VALIDATOR_URL": "http://jsonlint.com/",
+
+	"en": {
+		"zebra_0": "Hello!",
+		"zebra_1": "Yay!",
+		"zebra_2": "Let's learn\nalphabet!",
+		"zebra_3": "My name is\nZebra.",
+		"zebra_4": "Let's play!",
+
+        "menu": "Menu",
+        "next": "Next",
+        "restart": "Restart",
+        "edit": "Edit",
+        "save": "Save",
+		"save_hint": "Please just make a screenshot\nif you experiencing\nissues with saving",
+		"sandbox": "Chalkboard",
+
+		"letters_complete_title": "Congratulations!",
+		"letters_complete_subtitle": "You have learned all letters",
+		"letters_complete_hint_1": "Tap to open",
+		"letters_complete_hint_2": "Tap to continue",
+		"words_mode": "Words Mode\nunlocked!",
+
+		"game_complete": "Game Complete!"
+	},
+
+	"es": {
+		"zebra_0": "¡Hola!",
+		"zebra_1": "¡Sí!",
+		"zebra_2": "¡Aprendamos\nel alfabeto!",
+		"zebra_3": "Mi nombre\nes Cebra.",
+		"zebra_4": "¡A jugar!",
+
+		"menu": "Menú",
+		"next": "Siguiente",
+		"restart": "Empezar\nde nuevo",
+		"edit": "Editar",
+		"save": "Guardar",
+		"save_hint": "Haz una captura\nsi tienes problemas\nal guardar",
+		"sandbox": "Pizarra",
+
+		"letters_complete_title": "¡Enhorabuena!!",
+		"letters_complete_subtitle": "Has aprendido todas las letras",
+		"letters_complete_hint_1": "Pulsa para abrir",
+		"letters_complete_hint_2": "Pulsa para continuar",
+		"words_mode": "¡Modo Palabras\ndesbloqueado!",
+
+		"game_complete": "¡Juego Completado!"
+	},
+
+	"fr": {
+		"zebra_0": "Salut!",
+		"zebra_1": "Je suis\nMr Zèbre",
+		"zebra_2": "Apprenons\nl'alphabet!",
+		"zebra_3": "Jouons\nensemble!",
+		"zebra_4": "Découvrons\nl'écriture!",
+
+		"menu": "Menu",
+		"next": "Suivant",
+		"restart": "Recommencer",
+		"edit": "Modifier",
+		"save": "Enregistrer",
+		"save_hint": "Fait une capture\nd'écran pour sauvegarder\nton image",
+		"sandbox": "Zone Libre",
+
+		"letters_complete_title": "Félicitations!!",
+		"letters_complete_subtitle": "Tu as appris toutes les lettres",
+		"letters_complete_hint_1": "Appuie pour ouvrir\nton cadeau",
+		"letters_complete_hint_2": "Appuie pour continuer",
+		"words_mode": "Zone des Mots\ndébloquée!",
+
+		"game_complete": "Jeu terminé!"
+	},
+
+	"it": {
+		"zebra_0": "Ciao!",
+		"zebra_1": "Sono\nMr Zebra",
+		"zebra_2": "Impariamo\nl'alfabeto!",
+		"zebra_3": "Giochiamo\ninsieme!",
+		"zebra_4": "Scopriamo\nla scrittura!",
+
+		"menu": "Menù",
+		"next": "Successiva",
+		"restart": "Ricomincia",
+		"edit": "Modifica",
+		"save": "Salva",
+		"save_hint": "Fai uno salvataggio\ndello schermo per conservare\nla tua immagine",
+		"sandbox": "Zona libera",
+
+		"letters_complete_title": "Congratulazioni!",
+		"letters_complete_subtitle": "Hai imparato tutte le lettere",
+		"letters_complete_hint_1": "Tocca per aprire",
+		"letters_complete_hint_2": "Tocca per continuare",
+		"words_mode": "Modalità Parole\nsbloccata!",
+
+		"game_complete": "Gioco completato!"
+	},
+
+	"pt": {
+		"zebra_0": "Olá",
+		"zebra_1": "Yeah!",
+		"zebra_2": "Aprendamos\no alfabeto!",
+		"zebra_3": "O meu nome\né Zebra.",
+		"zebra_4": "Vamos\njogar!",
+
+		"menu": "Menu",
+		"next": "Próximo",
+		"restart": "Reiniciar",
+		"edit": "Editar",
+		"save": "Guardar",
+		"save_hint": "Por favor, faz uma\ncaptura do ecrã se tiveres\nproblemas a guardar",
+		"sandbox": "Quadro",
+
+		"letters_complete_title": "Parabéns!",
+		"letters_complete_subtitle": "Aprendeste todas as letras",
+		"letters_complete_hint_1": "Toca para abrir",
+		"letters_complete_hint_2": "Toca para continuar",
+		"words_mode": "Modo de palavras\ndesbloqueado!",
+
+		"game_complete": "Jogo completado!"
+	}
+}

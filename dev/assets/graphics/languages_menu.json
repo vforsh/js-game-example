@@ -1,0 +1,67 @@
+{"frames": {
+
+"Button_Home0000":
+{
+	"frame": {"x":371,"y":295,"w":80,"h":80},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
+	"sourceSize": {"w":80,"h":80}
+},
+"Flag_EN0000":
+{
+	"frame": {"x":1,"y":161,"w":185,"h":132},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":185,"h":132},
+	"sourceSize": {"w":185,"h":132}
+},
+"Flag_ES0000":
+{
+	"frame": {"x":217,"y":1,"w":183,"h":132},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":183,"h":132},
+	"sourceSize": {"w":183,"h":132}
+},
+"Flag_FR0000":
+{
+	"frame": {"x":188,"y":161,"w":183,"h":132},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":183,"h":132},
+	"sourceSize": {"w":183,"h":132}
+},
+"Flag_IT0000":
+{
+	"frame": {"x":1,"y":295,"w":183,"h":132},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":183,"h":132},
+	"sourceSize": {"w":183,"h":132}
+},
+"Flag_PT0000":
+{
+	"frame": {"x":186,"y":295,"w":183,"h":132},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":183,"h":132},
+	"sourceSize": {"w":183,"h":132}
+},
+"Selection0000":
+{
+	"frame": {"x":1,"y":1,"w":214,"h":158},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":214,"h":158},
+	"sourceSize": {"w":214,"h":158}
+}},
+"meta": {
+	"app": "Adobe Flash Professional",
+	"version": "15.0.1.179",
+	"image": "languages_menu.png",
+	"format": "RGBA8888",
+	"size": {"w":512,"h":512},
+	"scale": "1"
+}
+}

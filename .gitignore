@@ -1,0 +1,8 @@
+.idea
+deploy
+src
+tasks/node_modules
+tasks/sftp.json
+bs-config.js
+grunt-sftp.bat
+TODO

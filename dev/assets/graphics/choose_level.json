@@ -1,0 +1,179 @@
+{"frames": {
+
+"Big_Lock0000":
+{
+	"frame": {"x":316,"y":1,"w":138,"h":148},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":138,"h":148},
+	"sourceSize": {"w":138,"h":148}
+},
+"Button_Home0000":
+{
+	"frame": {"x":270,"y":235,"w":80,"h":80},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
+	"sourceSize": {"w":80,"h":80}
+},
+"Button_Sandbox0000":
+{
+	"frame": {"x":1,"y":1,"w":311,"h":112},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":311,"h":112},
+	"sourceSize": {"w":311,"h":112}
+},
+"Button_Sound_Off0000":
+{
+	"frame": {"x":1,"y":218,"w":80,"h":80},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
+	"sourceSize": {"w":80,"h":80}
+},
+"Button_Sound_On0000":
+{
+	"frame": {"x":354,"y":235,"w":80,"h":80},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":80},
+	"sourceSize": {"w":80,"h":80}
+},
+"LetterIcon_Back_Locked0000":
+{
+	"frame": {"x":139,"y":201,"w":127,"h":93},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":127,"h":93},
+	"sourceSize": {"w":127,"h":93}
+},
+"LetterIcon_Back_Unlocked0000":
+{
+	"frame": {"x":1,"y":117,"w":134,"h":97},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":134,"h":97},
+	"sourceSize": {"w":134,"h":97}
+},
+"Pagination_Inner0000":
+{
+	"frame": {"x":491,"y":127,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+"Pagination_Outer0000":
+{
+	"frame": {"x":458,"y":85,"w":38,"h":38},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":38,"h":38},
+	"sourceSize": {"w":38,"h":38}
+},
+"Star_Letter0000":
+{
+	"frame": {"x":85,"y":298,"w":70,"h":69},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":69},
+	"sourceSize": {"w":70,"h":69}
+},
+"Stars0000":
+{
+	"frame": {"x":458,"y":1,"w":38,"h":80},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":38,"h":80},
+	"sourceSize": {"w":38,"h":80}
+},
+"Switch_Back0000":
+{
+	"frame": {"x":139,"y":117,"w":154,"h":80},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":154,"h":80},
+	"sourceSize": {"w":154,"h":80}
+},
+"Switch_Back_20000":
+{
+	"frame": {"x":297,"y":153,"w":154,"h":78},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":154,"h":78},
+	"sourceSize": {"w":154,"h":78}
+},
+"Switch_Letter0000":
+{
+	"frame": {"x":159,"y":298,"w":27,"h":31},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":27,"h":31},
+	"sourceSize": {"w":27,"h":31}
+},
+"Switch_Letter_20000":
+{
+	"frame": {"x":85,"y":255,"w":27,"h":31},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":27,"h":31},
+	"sourceSize": {"w":27,"h":31}
+},
+"Switch_Letter_20001":
+{
+	"frame": {"x":85,"y":255,"w":27,"h":31},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":27,"h":31},
+	"sourceSize": {"w":27,"h":31}
+},
+"Switch_Pen0000":
+{
+	"frame": {"x":458,"y":127,"w":29,"h":37},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":29,"h":37},
+	"sourceSize": {"w":29,"h":37}
+},
+"Switch_Picture0000":
+{
+	"frame": {"x":85,"y":218,"w":29,"h":33},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":29,"h":33},
+	"sourceSize": {"w":29,"h":33}
+},
+"Switch_Picture_20000":
+{
+	"frame": {"x":455,"y":168,"w":29,"h":33},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":29,"h":33},
+	"sourceSize": {"w":29,"h":33}
+},
+"Switch_Picture_20001":
+{
+	"frame": {"x":455,"y":168,"w":29,"h":33},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":29,"h":33},
+	"sourceSize": {"w":29,"h":33}
+},
+"Switch_Tile0000":
+{
+	"frame": {"x":438,"y":235,"w":62,"h":63},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":62,"h":63},
+	"sourceSize": {"w":62,"h":63}
+}},
+"meta": {
+	"app": "Adobe Flash Professional",
+	"version": "15.0.1.179",
+	"image": "choose_level.png",
+	"format": "RGBA8888",
+	"size": {"w":512,"h":512},
+	"scale": "1"
+}
+}

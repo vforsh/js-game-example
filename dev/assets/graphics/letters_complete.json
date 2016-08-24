@@ -1,0 +1,35 @@
+{"frames": {
+
+"Present_Closed0000":
+{
+	"frame": {"x":603,"y":1,"w":351,"h":367},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":367},
+	"sourceSize": {"w":351,"h":367}
+},
+"Rays0000":
+{
+	"frame": {"x":1,"y":1,"w":601,"h":599},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":601,"h":599},
+	"sourceSize": {"w":601,"h":599}
+},
+"WordsMode_Button0000":
+{
+	"frame": {"x":603,"y":369,"w":324,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":256},
+	"sourceSize": {"w":324,"h":256}
+}},
+"meta": {
+	"app": "Adobe Flash Professional",
+	"version": "15.0.1.179",
+	"image": "letters_complete.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":1024},
+	"scale": "1"
+}
+}

@@ -1,0 +1,23 @@
+{
+ "../dev/assets/graphics/credits.png": "716f9d1f1acdd2a86aa15241ce9820cc",
+ "../dev/assets/graphics/boosters.png": "0a5859a0d575dfaa76727daf69e9aa9a",
+ "../dev/assets/graphics/game_complete.png": "abb6a36073cb6706c7f28fb5d9bced7c",
+ "../dev/assets/graphics/rotate-phone.png": "47abf6dde80d9f15ea64197bb5e7d61b",
+ "../dev/assets/graphics/interface.png": "92d4013915b2711b1760afb05ad7f756",
+ "../dev/assets/graphics/preloader.png": "425fc8fcf3fa56822d9489925f0da5a6",
+ "../dev/assets/graphics/tutorial.png": "289b85bdeecb6ea1fd3c8d5fb431d118",
+ "../dev/assets/graphics/items.png": "bcacae074fb28439ae5a9fe5b4402886",
+ "../dev/assets/graphics/main_menu.png": "57be55b92ff02694b4364f4eff74f935",
+ "../dev/assets/graphics/background.png": "66ad2aef76dfeb267508953686b4c8d1",
+ "../dev/assets/graphics/letters.png": "27552d6179b694cd7a2af8434ccb8b47",
+ "../dev/assets/graphics/languages_menu.png": "7700f79b490304eea2f29b5437d6ebcf",
+ "../dev/assets/graphics/graphics_1.png": "f40c9c68c49f79bde301c8023e8abff5",
+ "../dev/assets/graphics/choose_level.png": "1c0f63a110e1b017a69d95dd748b75ba",
+ "../dev/assets/graphics/pictures_2.png": "5bd13f81f3ff3c202b662a85041bfd08",
+ "../dev/assets/graphics/pictures_1.png": "4ce81db32f4e77c8a54fc77db5bca568",
+ "../dev/assets/graphics/backgrounds.png": "6a4d0fcb4c0ba579423bac1448e82f72",
+ "../dev/assets/graphics/word_level.png": "ee7950e09b043aacb44d434b825ae161",
+ "../dev/assets/graphics/free_zone.png": "2ead7f2501f138fd40c3a41ea58b82eb",
+ "../dev/assets/graphics/backgrounds_1.png": "f4980ecdb05981c49f217db29bb00ae0",
+ "../dev/assets/graphics/letters_complete.png": "70a98b242875f84dc3151da91430d6e0"
+}

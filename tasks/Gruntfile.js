@@ -127,26 +127,6 @@ module.exports = function(grunt) {
 			uploadLite: {
 				files: { "./": ["../deploy/js/game.min.js", "../deploy/index.html"] },
 				options: '<%= sftpOptions %>'
-			},
-			downloadLetters: {
-				files: {
-					//local dest and remote src
-					'en_letters.json': 'en_letters.json',
-					'pt_letters.json': 'pt_letters.json',
-					'es_letters.json': 'es_letters.json',
-					'it_letters.json': 'it_letters.json',
-					'fr_letters.json': 'fr_letters.json'
-				},
-				options: {
-					createDirectories: true,
-					path: '/var/www/html5/dl-editor/',
-					host: 'robowhale.com',
-					username: 'root',
-					password: 'bpgoslwsyswl',
-					showProgress: true,
-					destBasePath: "../dev/assets/letters/",
-					mode: 'download'
-				}
 			}
 		},
 

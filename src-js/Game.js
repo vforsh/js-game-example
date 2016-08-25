@@ -1,99 +1,80 @@
- var Boot = require('./states/Boot.js');
+var Boot = require('./states/Boot.js');
 var Preloader = require('./states/Preloader.js');
 var MainMenu = require('./states/mainMenu/MainMenu.js');
 var Config = require('./Config.js');
+var LocalStorageWrapper = require('./LocalStorageWrapper.js');
+var GameStats = require('./GameStats.js');
 
-Game.isDesktop = true;
-Game.weakDevice = false;
-Game.wasPaused = false;
-Game.wasMuted = false;
-Game.development = false;
-Game.language = "en";
-Game.lettersConfig = null;
-Game.fontFamily = "bariol_boldbold";
-Game.texts = null;
-Game.storage = null;
-Game.stats = null;
-Game.mainMusicLoop = null;
-Game.fullVolume = 0.25;
-Game.reducedVolume = 0.15;
-Game.wordsSounds = null;
-Game.analytics = null;
-Game.KIM = null;
-Game.KIM_AVAILABLE = false;
+Game = function () {
+	this.isDesktop = true;
+	this.weakDevice = false;
+	this.wasPaused = false;
+	this.wasMuted = false;
+	this.development = false;
+	this.language = "en";
+	this.lettersConfig = null;
+	this.fontFamily = "bariol_boldbold";
+	this.texts = null;
+	this.storage = new LocalStorageWrapper();
+	this.stats = new GameStats(this.storage);
+	this.mainMusicLoop = null;
+	this.fullVolume = 0.25;
+	this.reducedVolume = 0.15;
+	this.wordsSounds = null;
+	this.analytics = null;
 
-Game = function() {
-	var config = this.createConfig();
+	Phaser.Game.call(this, this.createConfig());
 
-	Phaser.Game.call(this, config);
+	this.start();
 };
 
-Game.prototype = Object.create(Phaser.Game);
+Game.prototype = Object.create(Phaser.Game.prototype);
+Game.prototype.constructor = Game;
 
-Game.prototype = {
+Game.prototype.start = function () {
+	this.state.add('Boot', Boot, true);
+	this.state.add('Preloader', Preloader);
+	this.state.add('MainMenu', MainMenu);
+	//this.state.add('LanguagesMenu', LanguagesMenu);
+	//this.state.add('ChooseLevelMenu', ChooseLevelMenu);
+	//this.state.add('ChooseWordMenu', ChooseWordMenu);
+	//this.state.add('Level', Level);
+	//this.state.add('WordLevel', WordLevel);
+	//this.state.add('FreeZone', FreeZone);
+	//this.state.add('LettersCompleteScreen', LettersCompleteScreen);
+};
 
-    constructor: Game,
+Game.prototype.createConfig = function () {
+	var desktop = this.checkDesktop();
+	var transparent = !desktop;
 
-    start: function() {
-        this.game = new Phaser.Game(this.createConfig());
+	return {
+		width: Config.SOURCE_GAME_WIDTH,
+		height: Config.SOURCE_GAME_HEIGHT,
+		//renderer: Phaser.CANVAS,
+		renderer: Phaser.AUTO,
+		transparent: transparent,
+		antialias: true,
+		enableDebug: Game.development
+	};
+};
 
-        //Main.storage = new utils.LocalStorageWrapper();
-        //Main.stats = new game.GameStats(Main.storage);
-        //
-        //Main.analytics = new utils.GoogleAnalytics();
+Game.prototype.checkDesktop = function () {
+	var desktop = false;
+	var ua = detect.parse(window.navigator.userAgent);
+	if (ua.device.type === "Desktop") {
+		desktop = true;
 
-        //this.initKIM_API();
-
-        this.game.state.add('Boot', Boot, true);
-        this.game.state.add('Preloader', Preloader);
-        this.game.state.add('MainMenu', MainMenu);
-        //this.game.state.add('LanguagesMenu', LanguagesMenu);
-        //this.game.state.add('ChooseLevelMenu', ChooseLevelMenu);
-        //this.game.state.add('ChooseWordMenu', ChooseWordMenu);
-        //this.game.state.add('Level', Level);
-        //this.game.state.add('WordLevel', WordLevel);
-        //this.game.state.add('FreeZone', FreeZone);
-        //this.game.state.add('LettersCompleteScreen', LettersCompleteScreen);
-    },
-
-	createConfig: function() {
-		var desktop = this.checkDesktop();
-		var transparent = !desktop;
-
-		return {
-			width: Config.SOURCE_GAME_WIDTH,
-			height: Config.SOURCE_GAME_HEIGHT,
-			//renderer: Phaser.CANVAS,
-			renderer: Phaser.AUTO,
-			transparent: transparent,
-			antialias: false,
-			enableDebug: Game.development
-		};
-	},
-
-	checkDesktop: function() {
-		var desktop = false;
-		var ua = detect.parse(window.navigator.userAgent);
-		if (ua.device.type === "Desktop") {
-			desktop = true;
-
-			if (ua.device.family.indexOf("Nexus") > -1) {
-				desktop = false;
-			}
+		if (ua.device.family.indexOf("Nexus") > -1) {
+			desktop = false;
 		}
-
-		return desktop;
-	},
-
-	changeState: function(newState, arg) {
-		/*var stateTransitionPlugin = this.plugins.plugins[0];
-		stateTransitionPlugin.changeState(newState, arg);*/
-
-		console.log("change state", newState);
-
-		this.state.start(newState, true, false, arg);
 	}
 
+	return desktop;
+};
+
+Game.prototype.changeState = function(newState, arg) {
+	this.state.start(newState, true, false, arg);
 };
 
 module.exports = Game;

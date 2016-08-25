@@ -174,7 +174,7 @@ Preloader.prototype = {
 	initTexts: function() {
 		var allTexts = this.game.cache.getJSON("texts");
 
-		Game.texts = allTexts[Game.language];
+		this.game.texts = allTexts[Game.language];
 	},
 
 	initWordSounds: function() {

@@ -62,94 +62,79 @@
 	var Preloader = __webpack_require__(5);
 	var MainMenu = __webpack_require__(7);
 	var Config = __webpack_require__(3);
+	var LocalStorageWrapper = __webpack_require__(11);
+	var GameStats = __webpack_require__(12);
 	
-	Game = function() {
-	    this.start();
+	Game = function () {
+		this.isDesktop = true;
+		this.weakDevice = false;
+		this.wasPaused = false;
+		this.wasMuted = false;
+		this.development = false;
+		this.language = "en";
+		this.lettersConfig = null;
+		this.fontFamily = "bariol_boldbold";
+		this.texts = null;
+		this.storage = new LocalStorageWrapper();
+		this.stats = new GameStats(this.storage);
+		this.mainMusicLoop = null;
+		this.fullVolume = 0.25;
+		this.reducedVolume = 0.15;
+		this.wordsSounds = null;
+		this.analytics = null;
+	
+		Phaser.Game.call(this, this.createConfig());
+	
+		this.start();
 	};
 	
-	Game.isDesktop = true;
-	Game.weakDevice = false;
-	Game.wasPaused = false;
-	Game.wasMuted = false;
-	Game.development = false;
-	Game.language = "en";
-	Game.lettersConfig = null;
-	Game.fontFamily = "bariol_boldbold";
-	Game.texts = null;
-	Game.storage = null;
-	Game.stats = null;
-	Game.mainMusicLoop = null;
-	Game.fullVolume = 0.25;
-	Game.reducedVolume = 0.15;
-	Game.wordsSounds = null;
-	Game.analytics = null;
-	Game.KIM = null;
-	Game.KIM_AVAILABLE = false;
+	Game.prototype = Object.create(Phaser.Game.prototype);
+	Game.prototype.constructor = Game;
 	
-	Game.prototype = {
+	Game.prototype.start = function () {
+		this.state.add('Boot', Boot, true);
+		this.state.add('Preloader', Preloader);
+		this.state.add('MainMenu', MainMenu);
+		//this.state.add('LanguagesMenu', LanguagesMenu);
+		//this.state.add('ChooseLevelMenu', ChooseLevelMenu);
+		//this.state.add('ChooseWordMenu', ChooseWordMenu);
+		//this.state.add('Level', Level);
+		//this.state.add('WordLevel', WordLevel);
+		//this.state.add('FreeZone', FreeZone);
+		//this.state.add('LettersCompleteScreen', LettersCompleteScreen);
+	};
 	
-	    constructor: Game,
+	Game.prototype.createConfig = function () {
+		var desktop = this.checkDesktop();
+		var transparent = !desktop;
 	
-	    start: function() {
-	        this.game = new Phaser.Game(this.createConfig());
+		return {
+			width: Config.SOURCE_GAME_WIDTH,
+			height: Config.SOURCE_GAME_HEIGHT,
+			//renderer: Phaser.CANVAS,
+			renderer: Phaser.AUTO,
+			transparent: transparent,
+			antialias: true,
+			enableDebug: Game.development
+		};
+	};
 	
-	        //Main.storage = new utils.LocalStorageWrapper();
-	        //Main.stats = new game.GameStats(Main.storage);
-	        //
-	        //Main.analytics = new utils.GoogleAnalytics();
+	Game.prototype.checkDesktop = function () {
+		var desktop = false;
+		var ua = detect.parse(window.navigator.userAgent);
+		if (ua.device.type === "Desktop") {
+			desktop = true;
 	
-	        //this.initKIM_API();
-	
-	        this.game.state.add('Boot', Boot, true);
-	        this.game.state.add('Preloader', Preloader);
-	        this.game.state.add('MainMenu', MainMenu);
-	        //this.game.state.add('LanguagesMenu', LanguagesMenu);
-	        //this.game.state.add('ChooseLevelMenu', ChooseLevelMenu);
-	        //this.game.state.add('ChooseWordMenu', ChooseWordMenu);
-	        //this.game.state.add('Level', Level);
-	        //this.game.state.add('WordLevel', WordLevel);
-	        //this.game.state.add('FreeZone', FreeZone);
-	        //this.game.state.add('LettersCompleteScreen', LettersCompleteScreen);
-	    },
-	
-		createConfig: function() {
-			var desktop = this.checkDesktop();
-			var transparent = !desktop;
-	
-			return {
-				width: Config.SOURCE_GAME_WIDTH,
-				height: Config.SOURCE_GAME_HEIGHT,
-				//renderer: Phaser.CANVAS,
-				renderer: Phaser.AUTO,
-				transparent: transparent,
-				antialias: false,
-				enableDebug: Game.development
-			};
-		},
-	
-		checkDesktop: function() {
-			var desktop = false;
-			var ua = detect.parse(window.navigator.userAgent);
-			if (ua.device.type === "Desktop") {
-				desktop = true;
-	
-				if (ua.device.family.indexOf("Nexus") > -1) {
-					desktop = false;
-				}
+			if (ua.device.family.indexOf("Nexus") > -1) {
+				desktop = false;
 			}
-	
-			return desktop;
-		},
-	
-		changeState: function(newState, arg) {
-			/*var stateTransitionPlugin = this.plugins.plugins[0];
-			stateTransitionPlugin.changeState(newState, arg);*/
-	
-			console.log("change state", newState);
-	
-			this.state.start(newState, true, false, arg);
 		}
 	
+		return desktop;
+	};
+	
+	Game.prototype.changeState = function(newState, arg) {
+		this.state.start(newState, true, false, arg);
 	};
 	
 	module.exports = Game;
@@ -596,9 +581,7 @@
 			this.initLettersConfig();
 			this.handleSoundByKIM_API();
 	
-			//console.log(`Language: ${Game.language}`);
-	
-			console.log("PRELOADER CREATE");
+			console.log("Language: %s", Game.language);
 	
 			this.game.changeState("MainMenu", true);
 			//(<game.Game> this.game).changeState("LanguagesMenu");
@@ -613,7 +596,7 @@
 		initTexts: function() {
 			var allTexts = this.game.cache.getJSON("texts");
 	
-			Game.texts = allTexts[Game.language];
+			this.game.texts = allTexts[Game.language];
 		},
 	
 		initWordSounds: function() {
@@ -748,9 +731,12 @@
 
 /***/ },
 /* 7 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	
+	var TalkBubble = __webpack_require__(8);
+	var SimpleButton = __webpack_require__(9);
+	var ToggleButton = __webpack_require__(10);
+	var Config = __webpack_require__(3);
 	
 	MainMenu = function () {
 		this.titleClicks = 0;
@@ -775,9 +761,9 @@
 		this.addCredits();
 		this.resize();
 	
-		//if (Game.weakDevice === false) {
-		//	this.initAnimation();
-		//}
+		if (this.game.weakDevice === false) {
+			this.initAnimation();
+		}
 	
 		if (this.fromPreloader) {
 			this.handleMusicOnStart();
@@ -788,7 +774,7 @@
 			this.game.onFocus.add(this.onFocus, this);
 		}
 	
-		Game.analytics.sendPageview("main_menu");
+		//this.game.analytics.sendPageview("main_menu");
 	};
 	
 	MainMenu.prototype.handleMusicOnStart = function() {
@@ -803,13 +789,14 @@
 	};
 	
 	MainMenu.prototype.onFocusLost = function() {
-		Game.wasMuted = this.game.sound.mute;
+		this.game.wasMuted = this.game.sound.mute;
 		this.game.sound.mute = true;
 	};
 	
 	MainMenu.prototype.onFocus = function() {
-		if (game.Main.wasMuted === false)
+		if (this.game.wasMuted === false) {
 			this.game.sound.mute = false;
+		}
 	};
 	
 	MainMenu.prototype.addBackground = function() {
@@ -823,20 +810,21 @@
 	};
 	
 	MainMenu.prototype.addTitle = function() {
-		var _this = this;
 		this.title = this.add.image(0, 0, "main_menu", "Title0000");
 		this.title.anchor.set(0.5, 0.5);
 		this.title.x = Config.HALF_GAME_WIDTH - 0.5;
 		this.title.y = Config.GAME_HEIGHT * 0.15;
 		this.title.inputEnabled = true;
-		this.title.events.onInputDown.add(function () {
-			if (_this.titleClicks++ > 5) {
-				_this.titleClicks = 0;
-				_this.game.add.tween(_this.title).to({alpha: 0}, 300, Phaser.Easing.Sinusoidal.InOut, true, 0, 0, true);
-				game.Main.storage.clear();
+		this.title.events.onInputDown.add(function() {
+			if (this.titleClicks++ > 5) {
+				this.titleClicks = 0;
+				this.game.add.tween(this.title).to({alpha: 0}, 300, Phaser.Easing.Sinusoidal.InOut, true, 0, 0, true);
+	
+				this.game.storage.clear();
+	
 				window.alert("Saved data was cleared!");
 			}
-		});
+		}, this);
 	};
 	
 	MainMenu.prototype.addZebra = function() {
@@ -848,7 +836,7 @@
 	};
 	
 	MainMenu.prototype.onZebraClick = function() {
-		this.game.sound.play('pop_4', 0.5);
+		//this.game.sound.play('pop_4', 0.5);
 		this.tweens.removeFrom(this.zebra);
 		this.zebra.y = Config.GAME_HEIGHT + 137;
 		this.game.add.tween(this.zebra).to({y: '-40'}, 200, Phaser.Easing.Sinusoidal.InOut, true, 0, 0, true);
@@ -856,7 +844,7 @@
 	};
 	
 	MainMenu.prototype.addTalkBubble = function() {
-		this.talkBubble = new game.TalkBubble(this.game, this.world);
+		this.talkBubble = new TalkBubble(this.game, this.world);
 		this.talkBubble.position.x = this.zebra.left - 10;
 	};
 	
@@ -868,28 +856,32 @@
 	};
 	
 	MainMenu.prototype.addButtons = function() {
-		var _this = this;
-		this.soundButton = new game.ToggleButton(this.game, 0, 0, "main_menu", "Button_Sound_On0000", "Button_Sound_Off0000");
-		this.soundButton.callback.add(function () {
-			_this.game.sound.mute = !_this.game.sound.mute;
-		});
-		this.soundButton.visible = _.isUndefined(game.Main.KIM);
+		this.soundButton = new ToggleButton(this.game, 0, 0, "main_menu", "Button_Sound_On0000", "Button_Sound_Off0000");
+		this.soundButton.callback.add(function() {
+			this.game.sound.mute = !this.game.sound.mute;
+		}, this);
+	
+		this.soundButton.visible = _.isUndefined(this.game.KIM);
 		if (this.game.sound.mute) {
 			this.soundButton.switchTextures();
 		}
-		this.playButton = new game.SimpleButton(this.game, 0, 0, "main_menu", "Button_Play0000");
+	
+		this.playButton = new SimpleButton(this.game, 0, 0, "main_menu", "Button_Play0000");
 		this.playButton.setCallbackDelay(200);
 		this.playButton.callback.addOnce(this.onPlayButtonClick, this);
-		var imageKey = "Flag_" + game.Main.language.toUpperCase() + "_Round0000";
-		this.languageButton = new game.SimpleButton(this.game, 0, 0, "main_menu", imageKey);
+	
+		var imageKey = "Flag_" + this.game.language.toUpperCase() + "_Round0000";
+		this.languageButton = new SimpleButton(this.game, 0, 0, "main_menu", imageKey);
 		this.languageButton.x = Config.GAME_WIDTH - 60;
 		this.languageButton.callback.addOnce(this.gotoLanguagesMenu, this);
-		this.creditsButton = new game.SimpleButton(this.game, 0, 0, "main_menu", "Button_Credits0000");
+	
+		this.creditsButton = new SimpleButton(this.game, 0, 0, "main_menu", "Button_Credits0000");
 		this.creditsButton.callback.add(this.toggleCredits, this);
+	
 		this.buttons = [this.soundButton, this.creditsButton, this.playButton, this.languageButton];
-		this.buttons.forEach(function (button) {
-			_this.world.add(button);
-		});
+		this.buttons.forEach(function(button) {
+			this.world.add(button);
+		}, this);
 	};
 	
 	MainMenu.prototype.onPlayButtonClick = function() {
@@ -916,116 +908,114 @@
 	};
 	
 	MainMenu.prototype.hideCredits = function() {
-		var _this = this;
 		this.game.add.tween(this.credits).to({alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 		this.game.add.tween(this.credits).to({y: this.credits.y + 200}, 500, Phaser.Easing.Back.In, true)
-			.onComplete.addOnce(function () {
-			_this.playButton.input.enabled = true;
-			_this.creditsButton.input.enabled = true;
-			_this.credits.visible = false;
-		}, this);
+			.onComplete.addOnce(function() {
+				this.playButton.input.enabled = true;
+				this.creditsButton.input.enabled = true;
+				this.credits.visible = false;
+			}, this);
 	};
 	
 	MainMenu.prototype.showCredits = function() {
-		var _this = this;
 		this.credits.visible = true;
 		this.credits.alpha = 0;
 		this.credits.y = (Config.GAME_HEIGHT - this.credits.height) * 0.5 + 200;
+	
 		this.game.add.tween(this.credits).to({alpha: 1}, 500, Phaser.Easing.Linear.None, true);
 		this.game.add.tween(this.credits).to({y: this.credits.y - 200}, 500, Phaser.Easing.Back.Out, true);
+	
 		this.playButton.input.enabled = false;
 		this.creditsButton.input.enabled = false;
 		this.game.input.onDown.addOnce(function () {
-			_this.hideCredits();
+			this.hideCredits();
 		}, this);
 	};
 	
 	MainMenu.prototype.startMusic = function() {
-		if (game.Main.mainMusicLoop) {
-			game.Main.mainMusicLoop.play();
+		if (this.game.mainMusicLoop) {
+			this.game.mainMusicLoop.play();
 		}
+	
 		this.soundButton.switchTextures();
 		this.soundButton.input.enabled = true;
 	};
 	
 	MainMenu.prototype.testKIM_API = function() {
-		var style = {font: "30px " + game.Main.fontFamily, fill: "#fff0000", align: "center"};
+		var style = {font: "30px " + this.game.fontFamily, fill: "#fff0000", align: "center"};
 		var text = this.game.add.text(0, 0, "", style);
 		text.anchor.set(0.5, 0.5);
 		text.x = Config.HALF_GAME_WIDTH;
 		text.y = Config.GAME_HEIGHT * 0.9;
 		text.setShadow(0, 2, 0, 0, true, true);
 		text.lineSpacing = -6;
-		text.setText("\n\t\t\t\tKIM API: " + (_.isUndefined(game.Main.KIM) === false) + "\n\t\t\t\t" + window.location.href + "\n\t\t\t");
+		text.setText("\n\t\t\t\tKIM API: " + (_.isUndefined(this.game.KIM) === false) + "\n\t\t\t\t" + window.location.href + "\n\t\t\t");
 	};
 	
 	MainMenu.prototype.initAnimation = function() {
 		this.game.add.tween(this.letters.scale).from({x: 1.5, y: 1.5}, 600, Phaser.Easing.Back.Out, true);
 		this.game.add.tween(this.letters).from({alpha: 0}, 600, Phaser.Easing.Cubic.Out, true);
+	
 		this.animateTitle();
 		this.animateZebra();
 		this.animateButtons();
 	};
 	
 	MainMenu.prototype.animateTitle = function() {
-		var _this = this;
 		var delay = 350;
 		this.title.alpha = 0;
 		this.title.scale.set(1.3, 1.3);
 		this.game.add.tween(this.title).to({alpha: 1}, 300, Phaser.Easing.Cubic.Out, true, delay);
 		this.game.add.tween(this.title.scale).to({x: 1, y: 1}, 600, Phaser.Easing.Back.Out, true, delay)
 			.onComplete.addOnce(function () {
-			_this.game.add.tween(_this.title.scale).to({
-				y: 0.94,
-				x: 1.06
-			}, 800, Phaser.Easing.Sinusoidal.InOut, true, 0, 1000, true);
-		});
+				this.game.add.tween(this.title.scale).to({
+					y: 0.94,
+					x: 1.06
+				}, 800, Phaser.Easing.Sinusoidal.InOut, true, 0, 1000, true);
+			}, this);
 	};
 	
 	MainMenu.prototype.animateZebra = function() {
-		var _this = this;
 		var delay = 700;
 		this.zebra.scale.set(0);
 		this.game.add.tween(this.zebra.scale).to({x: 1, y: 1}, 600, Phaser.Easing.Back.Out, true, delay)
 			.onComplete.addOnce(function () {
-			_this.game.add.tween(_this.zebra.scale).to({y: 0.95}, 800, Phaser.Easing.Sinusoidal.Out, true, 0, 10000, true);
-		});
-		this.game.add.tween(this.talkBubble.scale).from({
-			x: 0,
-			y: 0
-		}, 600, Phaser.Easing.Back.Out, true, delay + 400);
+				this.game.add.tween(this.zebra.scale).to({y: 0.95}, 800, Phaser.Easing.Sinusoidal.Out, true, 0, 10000, true);
+			}, this);
+	
+		this.game.add.tween(this.talkBubble.scale).from({x: 0, y: 0}, 600, Phaser.Easing.Back.Out, true, delay + 400);
 		this.game.add.tween(this.talkBubble).from({angle: -40}, 600, Phaser.Easing.Back.Out, true, delay + 400)
 			.onComplete.addOnce(function () {
-			_this.game.add.tween(_this.talkBubble.position).to({y: '+10'}, 800, Phaser.Easing.Sinusoidal.InOut, true, 0, 1000, true);
-		});
+				this.game.add.tween(this.talkBubble.position).to({y: '+10'}, 800, Phaser.Easing.Sinusoidal.InOut, true, 0, 1000, true);
+			}, this);
 	};
 	
 	MainMenu.prototype.animateButtons = function() {
-		var _this = this;
 		var delay = 1300;
-		this.buttons.forEach(function (button) {
+		this.buttons.forEach(function(button) {
 			button.scale.set(0, 0);
-			var tween = _this.game.add.tween(button.scale).to({
-				x: 1,
-				y: 1
-			}, 500, Phaser.Easing.Back.Out, true, delay);
-			if (button === _this.playButton) {
-				tween.onComplete.addOnce(_this.shakePlayButton, _this);
+			var tween = this.game.add.tween(button.scale).to({ x: 1, y: 1 }, 500, Phaser.Easing.Back.Out, true, delay);
+			if (button === this.playButton) {
+				tween.onComplete.addOnce(this.shakePlayButton, this);
 			}
+	
 			delay += 150;
-		});
+		}, this);
 	};
 	
 	MainMenu.prototype.shakePlayButton = function() {
-		var _this = this;
 		var angle = -5;
-		this.time.events.repeat(2200, Number.MAX_VALUE, function () {
-			_this.playButton.angle = angle;
-			_this.game.add.tween(_this.playButton).to({angle: Math.abs(angle)}, 100, Phaser.Easing.Sinusoidal.InOut, true, 0, 2, true)
-				.onComplete.add(function () {
-				_this.game.add.tween(_this.playButton).to({angle: 0}, 100, Phaser.Easing.Linear.None, true);
-			});
+		this.time.events.repeat(2200, Number.MAX_VALUE, function() {
+			this.playButton.angle = angle;
+			this.playShakeTween(angle);
 		}, this);
+	};
+	
+	MainMenu.prototype.playShakeTween = function(angle) {
+		this.game.add.tween(this.playButton).to({angle: Math.abs(angle)}, 100, Phaser.Easing.Sinusoidal.InOut, true, 0, 2, true)
+			.onComplete.add(function() {
+				this.game.add.tween(this.playButton).to({angle: 0}, 100, Phaser.Easing.Linear.None, true);
+			}, this);
 	};
 	
 	MainMenu.prototype.resize = function() {
@@ -1068,6 +1058,329 @@
 	};
 	
 	module.exports = MainMenu;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	TalkBubble = function(game, parent) {
+		Phaser.Group.call(this, game, parent, "talk_bubble");
+	
+		this.content = ['Yay!', "Let's learn\nalphabet!", 'My name is\nZebra.', "Let's play!"];
+		this.contentPointer = 0;
+		this.initContent();
+		this.addBack();
+		this.addText();
+	};
+	
+	TalkBubble.prototype = Object.create(Phaser.Group.prototype);
+	TalkBubble.prototype.constructor = TalkBubble;
+	
+	TalkBubble.prototype.initContent = function () {
+		var keys = Object.keys(this.game.texts).filter(function (key) {
+			return key.indexOf("zebra_") > -1 && key !== "zebra_0";
+		});
+	
+		this.content = keys.map(function(key) {
+			return this.game.texts[key];
+		}, this);
+	};
+	
+	TalkBubble.prototype.addBack = function () {
+		this.back = this.game.add.image(0, 0, "main_menu", "TalkBubble0000", this);
+		this.back.anchor.set(1, 0.33);
+	};
+	
+	TalkBubble.prototype.addText = function () {
+		var style = { font: "48px " + this.game.fontFamily, fill: "#206B8C", align: "center" };
+		var content = this.game.texts['zebra_0'];
+		this.text = this.game.add.text(0, 0, content, style, this);
+		this.text.anchor.set(0.5, 0.5);
+		this.text.x = this.back.left + 107;
+		this.text.y = this.back.top + this.back.height * 0.5 - 2;
+		this.text.lineSpacing = -10;
+		this.text.fontSize = 35;
+	};
+	
+	TalkBubble.prototype.updateContent = function () {
+		var newContent = this.content[this.contentPointer++];
+		if (this.contentPointer === this.content.length) {
+			this.contentPointer = 0;
+		}
+	
+		this.text.setText(newContent);
+		if (this.text.width > 170) {
+			var scale = 170 / this.text.width;
+			this.text.scale.set(scale, scale);
+		} else {
+			this.text.scale.set(1, 1);
+		}
+	
+		this.game.tweens.removeFrom(this.scale);
+		this.game.tweens.removeFrom(this);
+		this.scale.set(1, 1);
+		this.angle = 0;
+		this.game.add.tween(this.scale).from({ x: 0, y: 0 }, 700, Phaser.Easing.Back.Out, true);
+		this.game.add.tween(this).from({ angle: -50 }, 700, Phaser.Easing.Back.Out, true);
+	};
+	
+	module.exports = TalkBubble;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	SimpleButton = function(game, x, y, key, frame) {
+		Phaser.Image.call(this, game, x, y, key, frame);
+	
+		this.callbackDelay = 0;
+		this.enabled = true;
+		this.disableInput = false;
+		this.userData = {};
+		this._callback = new Phaser.Signal();
+		this.anchor.set(0.5, 0.5);
+	
+		this.inputEnabled = true;
+		this.events.onInputDown.add(this.onInputDown, this);
+		this.events.onInputUp.add(this.onInputUp, this);
+		if (this.game.device.desktop) {
+			this.input.useHandCursor = true;
+		}
+	};
+	
+	SimpleButton.prototype = Object.create(Phaser.Image.prototype);
+	SimpleButton.prototype.constructor = SimpleButton;
+	
+	SimpleButton.prototype.onInputDown = function () {
+		if (this.disableInput) {
+			return;
+		}
+	
+		if (this.game.device.webAudio) {
+			this.game.sound.play("tap");
+		}
+	
+		this.game.add.tween(this.scale).to({ x: 0.9, y: 0.9 }, 50, Phaser.Easing.Cubic.Out, true);
+	};
+	
+	SimpleButton.prototype.onInputUp = function () {
+		if (this.disableInput) {
+			return;
+		}
+	
+		this.game.tweens.removeFrom(this.scale);
+		this.game.add.tween(this.scale).to({ x: 1, y: 1 }, 150, Phaser.Easing.Cubic.Out, true)
+			.onComplete.addOnce(this.onInputUpComplete, this);
+	};
+	
+	SimpleButton.prototype.onInputUpComplete = function () {
+		if (this.callbackDelay > 0) {
+			this.game.time.events.add(this.callbackDelay, this._callback.dispatch, this._callback, this);
+		} else {
+			this._callback.dispatch(this);
+		}
+	};
+	
+	SimpleButton.prototype.setCallbackDelay = function (delay) {
+		this.callbackDelay = delay;
+	};
+	
+	SimpleButton.prototype.enable = function () {
+		if (this.enabled === false) {
+			this.enabled = true;
+			this.input.enabled = true;
+		}
+	};
+	
+	SimpleButton.prototype.disable = function () {
+		if (this.enabled) {
+			this.enabled = false;
+			this.input.enabled = false;
+		}
+	};
+	
+	SimpleButton.prototype.destroy = function () {
+		Phaser.Image.prototype.destroy.call(this);
+	
+		this._callback.dispose();
+		this._callback = null;
+	};
+	
+	Object.defineProperty(SimpleButton.prototype, "callback", {
+		get: function () {
+			return this._callback;
+		}
+	});
+	
+	module.exports = SimpleButton;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SimpleButton = __webpack_require__(9);
+	
+	ToggleButton = function(game, x, y, spritesheet, key1, key2) {
+		SimpleButton.call(this, game, x, y, spritesheet, key1);
+	
+		this.spriteSheet = spritesheet;
+		this.textureKey1 = key1;
+		this.textureKey2 = key2;
+		this.activeTextureKey = this.textureKey1;
+		this._state = 1;
+		this.events.onInputUp.add(this.switchTextures, this, 2);
+	};
+	
+	ToggleButton.prototype = Object.create(SimpleButton.prototype);
+	ToggleButton.prototype.constructor = ToggleButton;
+	
+	ToggleButton.prototype.switchTextures = function () {
+		this.activeTextureKey = (this.activeTextureKey === this.textureKey1)
+			? this.textureKey2
+			: this.textureKey1;
+	
+		this.frameName = this.activeTextureKey;
+		this._state = (this.activeTextureKey === this.textureKey1) ? 1 : 2;
+	};
+	
+	Object.defineProperty(ToggleButton.prototype, "state", {
+		get: function () {
+			return this._state;
+		}
+	});
+	
+	module.exports = ToggleButton;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	LocalStorageWrapper = function() {
+		this.localStorage = null;
+		this._enabled = true;
+		this.init();
+	};
+	
+	LocalStorageWrapper.prototype.constructor = LocalStorageWrapper;
+	
+	LocalStorageWrapper.prototype.init = function() {
+		try {
+			this.localStorage = window.localStorage;
+			this.localStorage.setItem("testKey", "testData");
+			this.localStorage.removeItem("testKey");
+		} catch (e) {
+			console.warn("localStorage isn't available! [" + e.toString() + "]");
+			this._enabled = false;
+		}
+	};
+	
+	LocalStorageWrapper.prototype.saveValue = function(key, value) {
+		if (this._enabled) {
+			var dataToSave = JSON.stringify(value);
+			if (_.isString(value) === false) {
+				this.localStorage.setItem(key, value);
+			} else {
+				var dataToSave = JSON.stringify(value);
+				this.localStorage.setItem(key, dataToSave);
+			}
+		} else {
+			console.warn("Can't save value, LocalStorage isn't available!");
+		}
+	};
+	
+	LocalStorageWrapper.prototype.getValue = function(key) {
+		return this.localStorage.getItem(key);
+	};
+	
+	LocalStorageWrapper.prototype.remove = function(key) {
+		if (this._enabled) {
+			this.localStorage.removeItem(key);
+		} else {
+			console.warn("Can't remove value, LocalStorage isn't available!");
+		}
+	};
+	
+	LocalStorageWrapper.prototype.clear = function() {
+		if (this._enabled) {
+			this.localStorage.clear();
+		}
+	};
+	
+	Object.defineProperty(LocalStorageWrapper.prototype, "enabled", {
+		get: function () {
+			return this._enabled;
+		}
+	});
+	
+	module.exports = LocalStorageWrapper;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	GameStats = function(storage) {
+		this.storage = storage;
+	};
+	
+	GameStats.BOOSTERS_WAS_SEEN = "Boosters_Was_Seen";
+	GameStats.TUTORIAL_COMPLETE = "Tutorial";
+	GameStats.COINS = "Coins";
+	GameStats.ALL_TIME_COINS = "All_Time_Coins";
+	GameStats.LANGUAGE = "Language";
+	
+	GameStats.prototype.constructor = GameStats;
+	
+	GameStats.prototype.getValue = function(key) {
+		return this.storage.getValue(key);
+	};
+	
+	GameStats.prototype.getBooleanValue = function(key) {
+		var value = this.storage.getValue(key);
+	
+		return (value === "true");
+	};
+	
+	GameStats.prototype.getNumericValue = function(key) {
+		var value = this.storage.getValue(key);
+		var num = parseFloat(value) || 0;
+		return num;
+	};
+	
+	GameStats.prototype.saveValue = function(key, value) {
+		this.storage.saveValue(key, value);
+	};
+	
+	GameStats.prototype.increase = function (key, increment) {
+		increment = increment || 1;
+	
+		var oldValue = parseInt(this.storage.getValue(key));
+		var newValue = oldValue + increment;
+	
+		this.saveValue(key, newValue);
+	};
+	
+	GameStats.prototype.changeNumericValue = function(key, changeValue) {
+		var oldValue = this.getNumericValue(key);
+		var newValue = oldValue + changeValue;
+	
+		this.saveValue(key, newValue);
+	
+		return newValue;
+	};
+	
+	GameStats.prototype.getLetterSaveKey = function(language, letter) {
+		return game.Main.language + "_" + letter;
+	};
+	
+	GameStats.prototype.getWordSaveKey = function(language, letter, word) {
+		return language + "_" + letter + "_" + word;
+	};
+	
+	GameStats.prototype.isLetterComplete = function(letterKey) {
+		return this.getBooleanValue(letterKey);
+	};
+	
+	module.exports = GameStats;
 
 /***/ }
 /******/ ]);
